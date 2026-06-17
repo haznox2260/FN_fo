@@ -6,7 +6,7 @@
 <title>Fée Noire ☆ Form Order</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --sky-deep:#0b1130;
@@ -97,30 +97,32 @@
     margin-bottom:36px;
   }
   .header .glyph{
-    font-size:28px;
+    font-size:24px;
     color:var(--lantern-soft);
     letter-spacing:8px;
     margin-bottom:6px;
     text-shadow:0 0 12px rgba(255,200,120,0.6);
   }
   .header h1{
-    font-family:'Cinzel Decorative', serif;
-    font-weight:700;
-    font-size:clamp(28px, 6vw, 42px);
+    font-family:'Quicksand', sans-serif;
+    font-weight:900;
+    font-size:clamp(32px, 7vw, 46px);
     margin:4px 0 6px;
+    text-transform: uppercase;
     background:linear-gradient(180deg, var(--lantern-soft), var(--lantern));
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
     text-shadow:0 0 25px rgba(255,200,120,0.35);
-    letter-spacing:1px;
+    letter-spacing:2px;
   }
   .header p.sub{
     margin:0;
-    font-size:14px;
+    font-size:13px;
+    font-weight: 700;
     color:var(--starlight);
     opacity:0.85;
-    letter-spacing:2px;
+    letter-spacing:4px;
   }
   .header .divider{
     margin:18px auto 0;
@@ -161,7 +163,7 @@
     display:flex;
     align-items:center;
     gap:8px;
-    font-weight:600;
+    font-weight:700;
     font-size:15px;
     color:var(--lantern-soft);
     margin-bottom:9px;
@@ -170,10 +172,6 @@
   .field label .req{
     color:var(--danger);
     font-size:12px;
-  }
-  .field label .star{
-    font-size:12px;
-    opacity:0.8;
   }
 
   input[type="text"],
@@ -188,7 +186,7 @@
     color:var(--ink);
     font-family:'Quicksand',sans-serif;
     font-size:15px;
-    font-weight:500;
+    font-weight:600;
     outline:none;
     transition:border-color 0.25s, box-shadow 0.25s, background 0.25s;
   }
@@ -226,10 +224,11 @@
   }
 
   .hint{
-    font-size:12px;
+    font-size:12.5px;
     color:var(--starlight);
-    opacity:0.6;
+    opacity:0.75;
     margin-top:6px;
+    font-weight: 500;
   }
 
   /* ===== Lưu ý box ===== */
@@ -242,12 +241,13 @@
     position:relative;
   }
   .notice .notice-title{
-    font-family:'Cinzel Decorative', serif;
-    font-size:15px;
+    font-weight: 700;
+    font-size:16px;
     color:var(--lantern-soft);
     text-align:center;
     margin-bottom:12px;
     letter-spacing:1px;
+    text-transform: uppercase;
   }
   .notice ul{
     margin:0;
@@ -255,24 +255,25 @@
     list-style:none;
   }
   .notice li{
-    font-size:13.5px;
+    font-size:14px;
     line-height:1.6;
     color:var(--starlight);
     opacity:0.92;
     margin-bottom:8px;
     padding-left:20px;
     position:relative;
+    font-weight: 500;
   }
   .notice li::before{
-    content:"✞";
+    content:"★";
     position:absolute;
     left:0;
     color:var(--lantern);
-    font-size:12px;
-    top:2px;
+    font-size:11px;
+    top:1px;
   }
   .notice li:last-child{margin-bottom:0;}
-  .notice b{color:var(--lantern-soft);}
+  .notice b{color:var(--lantern-soft); font-weight: 700;}
   .notice .time-line{
     text-align:center;
     font-weight:700;
@@ -292,16 +293,19 @@
     text-align:center;
   }
   .closed-banner-title{
-    font-family:'Cinzel Decorative', serif;
+    font-weight: 700;
     font-size:15px;
     color:var(--danger);
     margin-bottom:8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .closed-banner-text{
-    font-size:13.5px;
+    font-size:14px;
     color:var(--starlight);
     opacity:0.9;
     line-height:1.6;
+    font-weight: 500;
   }
 
   /* ===== Banner đơn gấp ===== */
@@ -311,10 +315,11 @@
     border-radius:14px;
     background:rgba(255,200,120,0.12);
     border:1px solid rgba(255,200,120,0.4);
-    font-size:13.5px;
+    font-size:14px;
     color:var(--lantern-soft);
     text-align:center;
     line-height:1.6;
+    font-weight: 500;
     animation:pulse-glow 2s ease-in-out infinite;
   }
   @keyframes pulse-glow{
@@ -339,9 +344,10 @@
     border-radius:16px;
     background:linear-gradient(135deg, var(--lantern-soft), var(--lantern) 60%, #e0a050);
     color:#2a1a06;
-    font-family:'Cinzel Decorative', serif;
+    font-family:'Quicksand', sans-serif;
     font-weight:700;
     font-size:16px;
+    text-transform: uppercase;
     letter-spacing:1.5px;
     cursor:pointer;
     box-shadow:0 8px 24px -6px rgba(255,200,120,0.5), 0 0 0 1px rgba(255,255,255,0.15) inset;
@@ -394,16 +400,16 @@
 <div class="wrap">
 
   <div class="header">
-    <div class="glyph">☆ミ✞ミ☆</div>
+    <div class="glyph">☆ミ★ミ☆</div>
     <h1>Fée Noire</h1>
-    <p class="sub">F O R M&nbsp; O R D E R</p>
+    <p class="sub">FORM ORDER</p>
     <div class="divider"></div>
   </div>
 
   <div class="card">
 
     <div class="notice">
-      <div class="notice-title">˙˚ʚ✞ɞ˚˙ Lưu ý ˙˚ʚ✞ɞ˚˙</div>
+      <div class="notice-title">˙˚ʚ★ɞ˚˙ Lưu ý ˙˚ʚ★ɞ˚˙</div>
       <div class="time-line">Thời gian nhận đơn: 10h00 – 1h00 sáng hôm sau</div>
       <ul>
         <li><b>PAGE KHÔNG DẮT NOCAPE.</b></li>
@@ -414,7 +420,7 @@
     </div>
 
     <div class="closed-banner" id="closedBanner" style="display:none;">
-      <div class="closed-banner-title">✞ Hiện ngoài giờ nhận đơn ✞</div>
+      <div class="closed-banner-title">Hiện ngoài giờ nhận đơn</div>
       <div class="closed-banner-text" id="closedBannerText"></div>
     </div>
 
@@ -453,8 +459,8 @@
       <div class="field">
         <label for="thoigian">Thời gian <span class="req">*</span></label>
         <input type="datetime-local" id="thoigian" name="thoigian" required>
-        <div class="hint">Chỉ nhận đơn trong khung 10h00 - 1h00 sáng hôm sau, và đặt trước ít nhất 2 tiếng nha bbi ✞</div>
-        <div class="hint" id="thoigianInvalidHint" style="display:none; color:var(--danger); opacity:0.9;">Giờ này ngoài khung nhận đơn (10h00 - 1h00 sáng hôm sau), bbi chọn lại giờ khác nha ✞</div>
+        <div class="hint">Chỉ nhận đơn trong khung 10h00 - 1h00 sáng hôm sau, và đặt trước ít nhất 2 tiếng nha bbi ★</div>
+        <div class="hint" id="thoigianInvalidHint" style="display:none; color:var(--danger); opacity:0.9;">Giờ này ngoài khung nhận đơn (10h00 - 1h00 sáng hôm sau), bbi chọn lại giờ khác nha ★</div>
       </div>
 
       <div class="field">
@@ -469,7 +475,7 @@
           <option value="Tim">Tim</option>
           <option value="Tiền">Tiền</option>
         </select>
-        <div class="hint" id="thanhtoanLockedHint" style="display:none;">Đơn gấp dưới 2 tiếng nên đã tự chuyển sang thanh toán Tiền nha ✞</div>
+        <div class="hint" id="thanhtoanLockedHint" style="display:none;">Đơn gấp dưới 2 tiếng nên đã tự chuyển sang thanh toán Tiền nha ★</div>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">✦ Gửi đơn order ✦</button>
@@ -480,7 +486,7 @@
 
   </div>
 
-  <div class="footer-note">✞ Fée Noire — nơi ánh sáng dẫn đường ✞</div>
+  <div class="footer-note">★ Fée Noire — nơi ánh sáng dẫn đường ★</div>
 
 </div>
 
@@ -507,8 +513,6 @@
   // Xử lý giờ Việt Nam (UTC+7) — không phụ thuộc giờ máy khách
   // ===================================================
   function getVietnamNow(){
-    // Lấy thời điểm UTC hiện tại (chính xác, không phụ thuộc múi giờ máy khách)
-    // rồi cộng 7 giờ để ra giờ Việt Nam.
     const nowUtcMs = Date.now();
     return new Date(nowUtcMs + 7 * 60 * 60 * 1000);
   }
@@ -527,15 +531,13 @@
   const thoigianInvalidHint = document.getElementById('thoigianInvalidHint');
   const submitBtn = document.getElementById('submitBtn');
 
-  // Khung giờ nhận đơn 10h-1h sáng vắt qua nửa đêm, nên không thể so sánh "hour >= OPEN && hour < CLOSE" như khung giờ thường.
-  // Trong ngày được mở: giờ từ 10h-23h59 HOẶC giờ từ 0h-0h59 đều hợp lệ; chỉ đóng từ 1h00 đến 9h59.
   function isWithinOperatingHours(hour){
     return hour >= OPEN_HOUR || hour < CLOSE_HOUR;
   }
 
   function checkOperatingHours(){
     const vnNow = getVietnamNow();
-    const hour = vnNow.getUTCHours(); // vì đã cộng offset thủ công nên dùng getUTCHours để tránh máy khách cộng lệch lần 2
+    const hour = vnNow.getUTCHours(); 
 
     const isOpen = isWithinOperatingHours(hour);
 
@@ -545,7 +547,7 @@
       const hh = String(hour).padStart(2,'0');
       const mm = String(vnNow.getUTCMinutes()).padStart(2,'0');
       closedBannerText.textContent =
-        `Bây giờ là ${hh}:${mm} (giờ Việt Nam). Fée Noire chỉ nhận đơn từ 10h00 đến 1h00 sáng hôm sau, bbi quay lại trong giờ nhận đơn nha ✞`;
+        `Bây giờ là ${hh}:${mm} (giờ Việt Nam). Fée Noire chỉ nhận đơn từ 10h00 đến 1h00 sáng hôm sau, bbi quay lại trong giờ nhận đơn nha ★`;
     }else{
       formFieldset.disabled = false;
       closedBanner.style.display = 'none';
@@ -553,7 +555,6 @@
     return isOpen;
   }
 
-  // Khi khách chọn thời gian → kiểm tra (1) giờ đi đơn có trong khung 10h-1h sáng không, (2) có phải đơn gấp (<2 tiếng) không
   function checkUrgent(){
     if(!thoigianInput.value){
       urgentBanner.style.display = 'none';
@@ -563,14 +564,10 @@
       return;
     }
 
-    // datetime-local trả về giờ theo múi giờ máy khách đã chọn trên picker.
-    // Ta hiểu giá trị này LÀ giờ Việt Nam mà khách muốn đặt (vì page chỉ phục vụ khách VN),
-    // nên quy đổi thẳng sang mốc UTC tương ứng để so sánh chính xác với "giờ VN hiện tại".
     const [datePart, timePart] = thoigianInput.value.split('T');
     const [yyyy, MM, dd] = datePart.split('-').map(Number);
     const [hh, mm] = timePart.split(':').map(Number);
 
-    // ===== Kiểm tra giờ đi đơn khách chọn có nằm trong khung 10h-1h sáng không =====
     const chosenIsValidHour = isWithinOperatingHours(hh);
     if(!chosenIsValidHour){
       thoigianInvalidHint.style.display = 'block';
@@ -584,7 +581,6 @@
       submitBtn.disabled = false;
     }
 
-    // Mốc thời gian khách chọn, quy theo giờ VN (UTC+7) → đổi ra epoch ms UTC thật
     const chosenUtcMs = Date.UTC(yyyy, MM-1, dd, hh, mm) - 7*60*60*1000;
     const nowUtcMs = Date.now();
 
@@ -606,13 +602,9 @@
   thoigianInput.addEventListener('change', checkUrgent);
   thoigianInput.addEventListener('input', checkUrgent);
 
-  // Kiểm tra giờ hoạt động ngay khi load, và lặp lại mỗi phút
-  // (để form tự khóa/mở khi khách đang ngồi đúng lúc qua mốc 10h/20h)
   checkOperatingHours();
   setInterval(checkOperatingHours, 60 * 1000);
 
-  // ===== Submit form =====
-  // ⚠️ Thay URL dưới đây bằng Web App URL của Google Apps Script (xem hướng dẫn deploy)
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVBHcOB1y0BJTdQRL6qwUDfU7FeqD6ryTTQOAuf9SiFSmm-mJv9TM6LNYBovKwMWsX/exec";
 
   const form = document.getElementById('orderForm');
@@ -621,14 +613,12 @@
   form.addEventListener('submit', async function(e){
     e.preventDefault();
 
-    // Chặn lần cuối phía client trước khi gửi, đề phòng khách mở form sẵn rồi chờ qua giờ đóng mới bấm gửi
     if(!checkOperatingHours()){
       statusMsg.className = 'status-msg error';
       statusMsg.textContent = 'Hiện ngoài giờ nhận đơn (10h00 - 1h00 sáng hôm sau), bbi không thể gửi lúc này.';
       return;
     }
 
-    // Chặn lần cuối: giờ đi đơn khách chọn phải nằm trong khung 10h-1h sáng
     if(thoigianInput.value){
       const [, timePartCheck] = thoigianInput.value.split('T');
       const [hhCheck] = timePartCheck.split(':').map(Number);
@@ -661,7 +651,6 @@
         body: JSON.stringify(data)
       });
 
-      // Vì dùng no-cors nên không đọc được response, ta coi như thành công nếu không bị lỗi network
       statusMsg.className = 'status-msg success';
       statusMsg.textContent = 'Đã gửi đơn thành công! Chờ staff nhận nha.';
       form.reset();
