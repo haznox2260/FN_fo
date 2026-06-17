@@ -404,7 +404,7 @@
 
     <div class="notice">
       <div class="notice-title">˙˚ʚ✞ɞ˚˙ Lưu ý ˙˚ʚ✞ɞ˚˙</div>
-      <div class="time-line">Thời gian nhận đơn: 10h00 – 20h00</div>
+      <div class="time-line">Thời gian nhận đơn: 10h00 – 1h00 sáng hôm sau</div>
       <ul>
         <li><b>PAGE KHÔNG DẮT NOCAPE.</b></li>
         <li>FN sẽ hủy đơn trước <b>2 tiếng</b> nếu không có staff nhận nha.</li>
@@ -431,6 +431,11 @@
       </div>
 
       <div class="field">
+        <label for="fb">Facebook / Link <span class="req">*</span></label>
+        <input type="text" id="fb" name="fb" placeholder="Tên Facebook hoặc link trang cá nhân..." required maxlength="200">
+      </div>
+
+      <div class="field">
         <label for="dichvu">Dịch vụ <span class="req">*</span></label>
         <select id="dichvu" name="dichvu" required>
           <option value="" disabled selected>-- Chọn dịch vụ --</option>
@@ -448,7 +453,8 @@
       <div class="field">
         <label for="thoigian">Thời gian <span class="req">*</span></label>
         <input type="datetime-local" id="thoigian" name="thoigian" required>
-        <div class="hint">Nhớ đặt trước ít nhất 2 tiếng nha bbi ✞</div>
+        <div class="hint">Chỉ nhận đơn trong khung 10h00 - 1h00 sáng hôm sau, và đặt trước ít nhất 2 tiếng nha bbi ✞</div>
+        <div class="hint" id="thoigianInvalidHint" style="display:none; color:var(--danger); opacity:0.9;">Giờ này ngoài khung nhận đơn (10h00 - 1h00 sáng hôm sau), bbi chọn lại giờ khác nha ✞</div>
       </div>
 
       <div class="field">
@@ -508,7 +514,7 @@
   }
 
   const OPEN_HOUR = 10;   // 10h00
-  const CLOSE_HOUR = 20;  // 20h00
+  const CLOSE_HOUR = 1;   // 1h00 sáng hôm sau (qua nửa đêm)
   const URGENT_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 tiếng
 
   const formFieldset = document.getElementById('formFieldset');
@@ -518,12 +524,20 @@
   const thoigianInput = document.getElementById('thoigian');
   const thanhtoanSelect = document.getElementById('thanhtoan');
   const thanhtoanLockedHint = document.getElementById('thanhtoanLockedHint');
+  const thoigianInvalidHint = document.getElementById('thoigianInvalidHint');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Khung giờ nhận đơn 10h-1h sáng vắt qua nửa đêm, nên không thể so sánh "hour >= OPEN && hour < CLOSE" như khung giờ thường.
+  // Trong ngày được mở: giờ từ 10h-23h59 HOẶC giờ từ 0h-0h59 đều hợp lệ; chỉ đóng từ 1h00 đến 9h59.
+  function isWithinOperatingHours(hour){
+    return hour >= OPEN_HOUR || hour < CLOSE_HOUR;
+  }
 
   function checkOperatingHours(){
     const vnNow = getVietnamNow();
     const hour = vnNow.getUTCHours(); // vì đã cộng offset thủ công nên dùng getUTCHours để tránh máy khách cộng lệch lần 2
 
-    const isOpen = hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+    const isOpen = isWithinOperatingHours(hour);
 
     if(!isOpen){
       formFieldset.disabled = true;
@@ -531,7 +545,7 @@
       const hh = String(hour).padStart(2,'0');
       const mm = String(vnNow.getUTCMinutes()).padStart(2,'0');
       closedBannerText.textContent =
-        `Bây giờ là ${hh}:${mm} (giờ Việt Nam). Fée Noire chỉ nhận đơn từ 10h00 đến 20h00, bbi quay lại trong giờ nhận đơn nha ✞`;
+        `Bây giờ là ${hh}:${mm} (giờ Việt Nam). Fée Noire chỉ nhận đơn từ 10h00 đến 1h00 sáng hôm sau, bbi quay lại trong giờ nhận đơn nha ✞`;
     }else{
       formFieldset.disabled = false;
       closedBanner.style.display = 'none';
@@ -539,12 +553,13 @@
     return isOpen;
   }
 
-  // Khi khách chọn thời gian → kiểm tra có phải đơn gấp (<2 tiếng) không
+  // Khi khách chọn thời gian → kiểm tra (1) giờ đi đơn có trong khung 10h-1h sáng không, (2) có phải đơn gấp (<2 tiếng) không
   function checkUrgent(){
     if(!thoigianInput.value){
       urgentBanner.style.display = 'none';
       thanhtoanLockedHint.style.display = 'none';
       thanhtoanSelect.disabled = false;
+      thoigianInvalidHint.style.display = 'none';
       return;
     }
 
@@ -554,6 +569,20 @@
     const [datePart, timePart] = thoigianInput.value.split('T');
     const [yyyy, MM, dd] = datePart.split('-').map(Number);
     const [hh, mm] = timePart.split(':').map(Number);
+
+    // ===== Kiểm tra giờ đi đơn khách chọn có nằm trong khung 10h-1h sáng không =====
+    const chosenIsValidHour = isWithinOperatingHours(hh);
+    if(!chosenIsValidHour){
+      thoigianInvalidHint.style.display = 'block';
+      submitBtn.disabled = true;
+      urgentBanner.style.display = 'none';
+      thanhtoanSelect.disabled = false;
+      thanhtoanLockedHint.style.display = 'none';
+      return;
+    }else{
+      thoigianInvalidHint.style.display = 'none';
+      submitBtn.disabled = false;
+    }
 
     // Mốc thời gian khách chọn, quy theo giờ VN (UTC+7) → đổi ra epoch ms UTC thật
     const chosenUtcMs = Date.UTC(yyyy, MM-1, dd, hh, mm) - 7*60*60*1000;
@@ -587,7 +616,6 @@
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVBHcOB1y0BJTdQRL6qwUDfU7FeqD6ryTTQOAuf9SiFSmm-mJv9TM6LNYBovKwMWsX/exec";
 
   const form = document.getElementById('orderForm');
-  const submitBtn = document.getElementById('submitBtn');
   const statusMsg = document.getElementById('statusMsg');
 
   form.addEventListener('submit', async function(e){
@@ -596,8 +624,19 @@
     // Chặn lần cuối phía client trước khi gửi, đề phòng khách mở form sẵn rồi chờ qua giờ đóng mới bấm gửi
     if(!checkOperatingHours()){
       statusMsg.className = 'status-msg error';
-      statusMsg.textContent = 'Hiện ngoài giờ nhận đơn (10h00 - 20h00), bbi không thể gửi lúc này.';
+      statusMsg.textContent = 'Hiện ngoài giờ nhận đơn (10h00 - 1h00 sáng hôm sau), bbi không thể gửi lúc này.';
       return;
+    }
+
+    // Chặn lần cuối: giờ đi đơn khách chọn phải nằm trong khung 10h-1h sáng
+    if(thoigianInput.value){
+      const [, timePartCheck] = thoigianInput.value.split('T');
+      const [hhCheck] = timePartCheck.split(':').map(Number);
+      if(!isWithinOperatingHours(hhCheck)){
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'Giờ đi đơn ngoài khung 10h00 - 1h00 sáng hôm sau, bbi chọn lại giờ khác nha.';
+        return;
+      }
     }
 
     statusMsg.className = 'status-msg loading';
@@ -606,6 +645,7 @@
 
     const data = {
       ten: document.getElementById('ten').value.trim(),
+      fb: document.getElementById('fb').value.trim(),
       dichvu: document.getElementById('dichvu').value,
       yeucau: document.getElementById('yeucau').value.trim(),
       thoigian: document.getElementById('thoigian').value,
@@ -623,14 +663,15 @@
 
       // Vì dùng no-cors nên không đọc được response, ta coi như thành công nếu không bị lỗi network
       statusMsg.className = 'status-msg success';
-      statusMsg.textContent = '✦ Đã gửi đơn thành công! Chờ staff nhận nha ✦';
+      statusMsg.textContent = 'Đã gửi đơn thành công! Chờ staff nhận nha.';
       form.reset();
       urgentBanner.style.display = 'none';
       thanhtoanLockedHint.style.display = 'none';
       thanhtoanSelect.disabled = false;
+      thoigianInvalidHint.style.display = 'none';
     }catch(err){
       statusMsg.className = 'status-msg error';
-      statusMsg.textContent = 'Có lỗi xảy ra, bbi thử gửi lại nha 🥺';
+      statusMsg.textContent = 'Có lỗi xảy ra, bbi thử gửi lại nha.';
     }finally{
       submitBtn.disabled = false;
     }
