@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fée Noire ☆ Form Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-deep:#0b1130;
+    --sky-mid:#1c2456;
+    --sky-violet:#3a2d6b;
+    --lantern:#ffc878;
+    --lantern-soft:#ffe3a8;
+    --starlight:#cfe3ff;
+    --ink:#fdf6e9;
+    --glass:rgba(255,255,255,0.06);
+    --glass-border:rgba(255,225,170,0.25);
+    --danger:#ffb4a8;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Quicksand',sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,210,140,0.10), transparent 40%),
+      radial-gradient(circle at 80% 75%, rgba(120,150,255,0.12), transparent 45%),
+      linear-gradient(160deg, var(--sky-deep) 0%, var(--sky-violet) 55%, var(--sky-mid) 100%);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ===== Particle ánh sáng bay lơ lửng ===== */
+  .sky-particles{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+    overflow:hidden;
+  }
+  .spark{
+    position:absolute;
+    bottom:-10px;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--lantern-soft) 0%, var(--lantern) 60%, transparent 100%);
+    box-shadow:0 0 8px 2px rgba(255,200,120,0.6);
+    animation:float-up linear infinite;
+    opacity:0;
+  }
+  @keyframes float-up{
+    0%{transform:translateY(0) translateX(0); opacity:0;}
+    8%{opacity:0.9;}
+    50%{transform:translateY(-50vh) translateX(15px);}
+    92%{opacity:0.6;}
+    100%{transform:translateY(-105vh) translateX(-10px); opacity:0;}
+  }
+
+  .stars{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 70% 30%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.5), transparent);
+    background-size:100% 100%;
+    animation:twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle{
+    0%{opacity:0.5;}
+    100%{opacity:1;}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:640px;
+    margin:0 auto;
+    padding:56px 20px 80px;
+  }
+
+  /* ===== Header ===== */
+  .header{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .header .glyph{
+    font-size:28px;
+    color:var(--lantern-soft);
+    letter-spacing:8px;
+    margin-bottom:6px;
+    text-shadow:0 0 12px rgba(255,200,120,0.6);
+  }
+  .header h1{
+    font-family:'Cinzel Decorative', serif;
+    font-weight:700;
+    font-size:clamp(28px, 6vw, 42px);
+    margin:4px 0 6px;
+    background:linear-gradient(180deg, var(--lantern-soft), var(--lantern));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 25px rgba(255,200,120,0.35);
+    letter-spacing:1px;
+  }
+  .header p.sub{
+    margin:0;
+    font-size:14px;
+    color:var(--starlight);
+    opacity:0.85;
+    letter-spacing:2px;
+  }
+  .header .divider{
+    margin:18px auto 0;
+    width:120px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--lantern), transparent);
+    opacity:0.6;
+  }
+
+  /* ===== Card form ===== */
+  .card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:24px;
+    padding:36px 28px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.03) inset,
+      0 30px 60px -20px rgba(0,0,0,0.5),
+      0 0 40px -10px rgba(255,200,120,0.15);
+    position:relative;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-1px; left:-1px; right:-1px; bottom:-1px;
+    border-radius:24px;
+    pointer-events:none;
+    background:linear-gradient(135deg, rgba(255,225,170,0.18), transparent 40%, transparent 70%, rgba(150,180,255,0.12));
+    z-index:-1;
+  }
+
+  .field{
+    margin-bottom:24px;
+  }
+  .field label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    font-size:15px;
+    color:var(--lantern-soft);
+    margin-bottom:9px;
+    letter-spacing:0.3px;
+  }
+  .field label .req{
+    color:var(--danger);
+    font-size:12px;
+  }
+  .field label .star{
+    font-size:12px;
+    opacity:0.8;
+  }
+
+  input[type="text"],
+  input[type="datetime-local"],
+  textarea,
+  select{
+    width:100%;
+    padding:13px 16px;
+    border-radius:14px;
+    border:1px solid rgba(255,225,170,0.22);
+    background:rgba(10,14,35,0.55);
+    color:var(--ink);
+    font-family:'Quicksand',sans-serif;
+    font-size:15px;
+    font-weight:500;
+    outline:none;
+    transition:border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+  textarea{
+    resize:vertical;
+    min-height:90px;
+    line-height:1.5;
+  }
+  input::placeholder, textarea::placeholder{
+    color:rgba(207,227,255,0.4);
+  }
+  input:focus, textarea:focus, select:focus{
+    border-color:var(--lantern);
+    background:rgba(10,14,35,0.8);
+    box-shadow:0 0 0 3px rgba(255,200,120,0.15), 0 0 18px rgba(255,200,120,0.25);
+  }
+
+  select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffc878' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    background-size:18px;
+    padding-right:42px;
+    cursor:pointer;
+  }
+  select option{
+    background:var(--sky-deep);
+    color:var(--ink);
+  }
+
+  input[type="datetime-local"]{
+    color-scheme:dark;
+  }
+
+  .hint{
+    font-size:12px;
+    color:var(--starlight);
+    opacity:0.6;
+    margin-top:6px;
+  }
+
+  /* ===== Lưu ý box ===== */
+  .notice{
+    margin-bottom:30px;
+    padding:20px 18px;
+    border-radius:18px;
+    background:rgba(255,180,120,0.07);
+    border:1px solid rgba(255,200,120,0.25);
+    position:relative;
+  }
+  .notice .notice-title{
+    font-family:'Cinzel Decorative', serif;
+    font-size:15px;
+    color:var(--lantern-soft);
+    text-align:center;
+    margin-bottom:12px;
+    letter-spacing:1px;
+  }
+  .notice ul{
+    margin:0;
+    padding-left:0;
+    list-style:none;
+  }
+  .notice li{
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--starlight);
+    opacity:0.92;
+    margin-bottom:8px;
+    padding-left:20px;
+    position:relative;
+  }
+  .notice li::before{
+    content:"✞";
+    position:absolute;
+    left:0;
+    color:var(--lantern);
+    font-size:12px;
+    top:2px;
+  }
+  .notice li:last-child{margin-bottom:0;}
+  .notice b{color:var(--lantern-soft);}
+  .notice .time-line{
+    text-align:center;
+    font-weight:700;
+    color:var(--lantern-soft);
+    font-size:14px;
+    margin-bottom:14px;
+    letter-spacing:0.5px;
+  }
+
+  /* ===== Banner ngoài giờ nhận đơn ===== */
+  .closed-banner{
+    margin-bottom:26px;
+    padding:18px;
+    border-radius:16px;
+    background:rgba(255,120,120,0.08);
+    border:1px solid rgba(255,150,150,0.35);
+    text-align:center;
+  }
+  .closed-banner-title{
+    font-family:'Cinzel Decorative', serif;
+    font-size:15px;
+    color:var(--danger);
+    margin-bottom:8px;
+  }
+  .closed-banner-text{
+    font-size:13.5px;
+    color:var(--starlight);
+    opacity:0.9;
+    line-height:1.6;
+  }
+
+  /* ===== Banner đơn gấp ===== */
+  .urgent-banner{
+    margin-bottom:24px;
+    padding:14px 16px;
+    border-radius:14px;
+    background:rgba(255,200,120,0.12);
+    border:1px solid rgba(255,200,120,0.4);
+    font-size:13.5px;
+    color:var(--lantern-soft);
+    text-align:center;
+    line-height:1.6;
+    animation:pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow{
+    0%, 100%{box-shadow:0 0 0 0 rgba(255,200,120,0.25);}
+    50%{box-shadow:0 0 16px 2px rgba(255,200,120,0.35);}
+  }
+
+  fieldset{
+    border:none;
+    margin:0;
+    padding:0;
+  }
+  fieldset:disabled{
+    opacity:0.5;
+  }
+
+  /* ===== Submit button ===== */
+  .submit-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(135deg, var(--lantern-soft), var(--lantern) 60%, #e0a050);
+    color:#2a1a06;
+    font-family:'Cinzel Decorative', serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:1.5px;
+    cursor:pointer;
+    box-shadow:0 8px 24px -6px rgba(255,200,120,0.5), 0 0 0 1px rgba(255,255,255,0.15) inset;
+    transition:transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  }
+  .submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px -6px rgba(255,200,120,0.65), 0 0 0 1px rgba(255,255,255,0.2) inset;
+  }
+  .submit-btn:active{
+    transform:translateY(0);
+  }
+  .submit-btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .status-msg{
+    margin-top:18px;
+    text-align:center;
+    font-size:14px;
+    font-weight:600;
+    min-height:20px;
+    transition:opacity 0.3s;
+  }
+  .status-msg.success{color:#a8ffc8;}
+  .status-msg.error{color:var(--danger);}
+  .status-msg.loading{color:var(--starlight);}
+
+  .footer-note{
+    text-align:center;
+    margin-top:28px;
+    font-size:12px;
+    color:var(--starlight);
+    opacity:0.5;
+    letter-spacing:1px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .spark, .stars{animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="sky-particles" id="particles"></div>
+
+<div class="wrap">
+
+  <div class="header">
+    <div class="glyph">☆ミ✞ミ☆</div>
+    <h1>Fée Noire</h1>
+    <p class="sub">F O R M&nbsp; O R D E R</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="card">
+
+    <div class="notice">
+      <div class="notice-title">˙˚ʚ✞ɞ˚˙ Lưu ý ˙˚ʚ✞ɞ˚˙</div>
+      <div class="time-line">Thời gian nhận đơn: 10h00 – 20h00</div>
+      <ul>
+        <li><b>PAGE KHÔNG DẮT NOCAPE.</b></li>
+        <li>FN sẽ hủy đơn trước <b>2 tiếng</b> nếu không có staff nhận nha.</li>
+        <li>Bbi hãy đặt đơn trước <b>2 tiếng</b> nha.</li>
+        <li>Fée Noire chỉ nhận thanh toán bằng tiền với đơn gấp dưới <b>2 tiếng</b> ˙ᵕ˙</li>
+      </ul>
+    </div>
+
+    <div class="closed-banner" id="closedBanner" style="display:none;">
+      <div class="closed-banner-title">✞ Hiện ngoài giờ nhận đơn ✞</div>
+      <div class="closed-banner-text" id="closedBannerText"></div>
+    </div>
+
+    <div class="urgent-banner" id="urgentBanner" style="display:none;">
+      ⏰ Đơn của bbi cách hiện tại dưới <b>2 tiếng</b> — đây là đơn gấp nên Fée Noire chỉ nhận <b>thanh toán bằng Tiền</b> nha ˙ᵕ˙
+    </div>
+
+    <form id="orderForm">
+      <fieldset id="formFieldset">
+
+      <div class="field">
+        <label for="ten">Tên của bbi <span class="req">*</span></label>
+        <input type="text" id="ten" name="ten" placeholder="Nhập tên bbi..." required maxlength="100">
+      </div>
+
+      <div class="field">
+        <label for="dichvu">Dịch vụ <span class="req">*</span></label>
+        <select id="dichvu" name="dichvu" required>
+          <option value="" disabled selected>-- Chọn dịch vụ --</option>
+          <option value="Uber">Uber</option>
+          <option value="Host">Host</option>
+          <option value="Log Acc">Log Acc</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="yeucau">Yêu cầu <span class="req">*</span></label>
+        <textarea id="yeucau" name="yeucau" placeholder="Mô tả chi tiết yêu cầu của bbi..." required maxlength="500"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="thoigian">Thời gian <span class="req">*</span></label>
+        <input type="datetime-local" id="thoigian" name="thoigian" required>
+        <div class="hint">Nhớ đặt trước ít nhất 2 tiếng nha bbi ✞</div>
+      </div>
+
+      <div class="field">
+        <label for="loinhan">Lời nhắn nhủ đến staff</label>
+        <textarea id="loinhan" name="loinhan" placeholder="(Không bắt buộc) Gửi lời nhắn cho staff nha..." maxlength="300"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="thanhtoan">Hình thức thanh toán <span class="req">*</span></label>
+        <select id="thanhtoan" name="thanhtoan" required>
+          <option value="" disabled selected>-- Chọn hình thức --</option>
+          <option value="Tim">Tim</option>
+          <option value="Tiền">Tiền</option>
+        </select>
+        <div class="hint" id="thanhtoanLockedHint" style="display:none;">Đơn gấp dưới 2 tiếng nên đã tự chuyển sang thanh toán Tiền nha ✞</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">✦ Gửi đơn order ✦</button>
+      <div class="status-msg" id="statusMsg"></div>
+
+      </fieldset>
+    </form>
+
+  </div>
+
+  <div class="footer-note">✞ Fée Noire — nơi ánh sáng dẫn đường ✞</div>
+
+</div>
+
+<script>
+  // ===== Particle sinh ánh sáng bay lơ lửng =====
+  const particleContainer = document.getElementById('particles');
+  const PARTICLE_COUNT = 28;
+  for(let i=0;i<PARTICLE_COUNT;i++){
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    const left = Math.random()*100;
+    const duration = 9 + Math.random()*10;
+    const delay = Math.random()*12;
+    const size = 3 + Math.random()*4;
+    spark.style.left = left+'vw';
+    spark.style.width = size+'px';
+    spark.style.height = size+'px';
+    spark.style.animationDuration = duration+'s';
+    spark.style.animationDelay = delay+'s';
+    particleContainer.appendChild(spark);
+  }
+
+  // ===================================================
+  // Xử lý giờ Việt Nam (UTC+7) — không phụ thuộc giờ máy khách
+  // ===================================================
+  function getVietnamNow(){
+    // Lấy thời điểm UTC hiện tại (chính xác, không phụ thuộc múi giờ máy khách)
+    // rồi cộng 7 giờ để ra giờ Việt Nam.
+    const nowUtcMs = Date.now();
+    return new Date(nowUtcMs + 7 * 60 * 60 * 1000);
+  }
+
+  const OPEN_HOUR = 10;   // 10h00
+  const CLOSE_HOUR = 20;  // 20h00
+  const URGENT_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 tiếng
+
+  const formFieldset = document.getElementById('formFieldset');
+  const closedBanner = document.getElementById('closedBanner');
+  const closedBannerText = document.getElementById('closedBannerText');
+  const urgentBanner = document.getElementById('urgentBanner');
+  const thoigianInput = document.getElementById('thoigian');
+  const thanhtoanSelect = document.getElementById('thanhtoan');
+  const thanhtoanLockedHint = document.getElementById('thanhtoanLockedHint');
+
+  function checkOperatingHours(){
+    const vnNow = getVietnamNow();
+    const hour = vnNow.getUTCHours(); // vì đã cộng offset thủ công nên dùng getUTCHours để tránh máy khách cộng lệch lần 2
+
+    const isOpen = hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+
+    if(!isOpen){
+      formFieldset.disabled = true;
+      closedBanner.style.display = 'block';
+      const hh = String(hour).padStart(2,'0');
+      const mm = String(vnNow.getUTCMinutes()).padStart(2,'0');
+      closedBannerText.textContent =
+        `Bây giờ là ${hh}:${mm} (giờ Việt Nam). Fée Noire chỉ nhận đơn từ 10h00 đến 20h00, bbi quay lại trong giờ nhận đơn nha ✞`;
+    }else{
+      formFieldset.disabled = false;
+      closedBanner.style.display = 'none';
+    }
+    return isOpen;
+  }
+
+  // Khi khách chọn thời gian → kiểm tra có phải đơn gấp (<2 tiếng) không
+  function checkUrgent(){
+    if(!thoigianInput.value){
+      urgentBanner.style.display = 'none';
+      thanhtoanLockedHint.style.display = 'none';
+      thanhtoanSelect.disabled = false;
+      return;
+    }
+
+    // datetime-local trả về giờ theo múi giờ máy khách đã chọn trên picker.
+    // Ta hiểu giá trị này LÀ giờ Việt Nam mà khách muốn đặt (vì page chỉ phục vụ khách VN),
+    // nên quy đổi thẳng sang mốc UTC tương ứng để so sánh chính xác với "giờ VN hiện tại".
+    const [datePart, timePart] = thoigianInput.value.split('T');
+    const [yyyy, MM, dd] = datePart.split('-').map(Number);
+    const [hh, mm] = timePart.split(':').map(Number);
+
+    // Mốc thời gian khách chọn, quy theo giờ VN (UTC+7) → đổi ra epoch ms UTC thật
+    const chosenUtcMs = Date.UTC(yyyy, MM-1, dd, hh, mm) - 7*60*60*1000;
+    const nowUtcMs = Date.now();
+
+    const diffMs = chosenUtcMs - nowUtcMs;
+    const isUrgent = diffMs < URGENT_WINDOW_MS;
+
+    if(isUrgent){
+      urgentBanner.style.display = 'block';
+      thanhtoanSelect.value = 'Tiền';
+      thanhtoanSelect.disabled = true;
+      thanhtoanLockedHint.style.display = 'block';
+    }else{
+      urgentBanner.style.display = 'none';
+      thanhtoanSelect.disabled = false;
+      thanhtoanLockedHint.style.display = 'none';
+    }
+  }
+
+  thoigianInput.addEventListener('change', checkUrgent);
+  thoigianInput.addEventListener('input', checkUrgent);
+
+  // Kiểm tra giờ hoạt động ngay khi load, và lặp lại mỗi phút
+  // (để form tự khóa/mở khi khách đang ngồi đúng lúc qua mốc 10h/20h)
+  checkOperatingHours();
+  setInterval(checkOperatingHours, 60 * 1000);
+
+  // ===== Submit form =====
+  // ⚠️ Thay URL dưới đây bằng Web App URL của Google Apps Script (xem hướng dẫn deploy)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_S88AbdI_c0zxiiWIBCbo8UJhT-mI-_rRjmDLuxc/dev";
+
+  const form = document.getElementById('orderForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    // Chặn lần cuối phía client trước khi gửi, đề phòng khách mở form sẵn rồi chờ qua giờ đóng mới bấm gửi
+    if(!checkOperatingHours()){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Hiện ngoài giờ nhận đơn (10h00 - 20h00), bbi không thể gửi lúc này.';
+      return;
+    }
+
+    statusMsg.className = 'status-msg loading';
+    statusMsg.textContent = 'Đang gửi đơn...';
+    submitBtn.disabled = true;
+
+    const data = {
+      ten: document.getElementById('ten').value.trim(),
+      dichvu: document.getElementById('dichvu').value,
+      yeucau: document.getElementById('yeucau').value.trim(),
+      thoigian: document.getElementById('thoigian').value,
+      loinhan: document.getElementById('loinhan').value.trim(),
+      thanhtoan: document.getElementById('thanhtoan').value
+    };
+
+    try{
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+
+      // Vì dùng no-cors nên không đọc được response, ta coi như thành công nếu không bị lỗi network
+      statusMsg.className = 'status-msg success';
+      statusMsg.textContent = '✦ Đã gửi đơn thành công! Chờ staff nhận nha ✦';
+      form.reset();
+      urgentBanner.style.display = 'none';
+      thanhtoanLockedHint.style.display = 'none';
+      thanhtoanSelect.disabled = false;
+    }catch(err){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Có lỗi xảy ra, bbi thử gửi lại nha 🥺';
+    }finally{
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
